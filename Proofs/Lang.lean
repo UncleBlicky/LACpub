@@ -1,6 +1,9 @@
 import Mathlib.Data.Fintype.Basic
 import Mathlib.Tactic.DeriveFintype
 import Mathlib.Data.Nat.ModEq
+--import Proofs.Kleene  -- or whatever path your Kleene.lean has
+--open Kleene
+
 -- ·  ⋅
 set_option linter.dupNamespace false
 set_option linter.unusedSectionVars false
@@ -127,7 +130,7 @@ example : [a,a,a,b] ∈  aeqbmod2 := by simp
 
 -- ANCHOR: anbm
 abbrev anbm : Lang SigmaABC
-:= { a^m ++ b^n | (m : ℕ)(n : ℕ)}
+:= { a^n ++ b^m | (n : ℕ)(m : ℕ)}
 -- ANCHOR_END: anbm
 
 example : [a,a,b] ∈ anbm := by
@@ -205,7 +208,7 @@ L₁ ⋅ L₂ = { w ++ v | (w ∈ L₁)(v ∈ L₂) }
 -- ANCHOR: concat_pred
 def L₃ : Lang Sigma
 | x => ∃ w v : Word Sigma ,
-        w ∈ L₂ ∧ v ∈ L₂ ∧ x = w ++ v
+        w ∈ L₁ ∧ v ∈ L₂ ∧ x = w ++ v
 -- ANCHOR_END: concat_pred
 
 open Nat
@@ -246,6 +249,8 @@ postfix:100 " * " => star
 L * = { w : Word Sigma | ∃ n : ℕ, (w ∈  L ^ n) }
 -- ANCHOR_END: star_def
 := by rfl
+
+
 
 end LangOps
 
