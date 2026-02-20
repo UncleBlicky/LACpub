@@ -45,12 +45,13 @@ abbrev A_div3 : DFA SigmaBin :=
       s := q0
       F := {q0}
       δ := fun q a => match q, a with
-                | q0, 0 => q0
-                | q0, 1 => q1
-                | q1, 0 => q2
-                | q1, 1 => q0
-                | q2, 0 => q1
-                | q2, 1 => q2
+        | q0, 0 => q0  -- 0 + 0*2^i ≡ 0 (mod 3)
+        | q0, 1 => q1  -- 0 + 1*2^i cycles through 1,2,1,2,...
+        | q1, 0 => q1  -- 1 + 0*2^i ≡ 1 (mod 3)
+        | q1, 1 => q2  -- 1 + 1*2^i: depends on position
+        | q2, 0 => q2  -- 2 + 0*2^i ≡ 2 (mod 3)
+        | q2, 1 => q0  -- 2 + 1*2^i cycles back
+        | _, _ => q0
   }
 
 -- You don't have to prove this
@@ -75,17 +76,22 @@ Formalise the NFA depicted in the exercise
 description on Moodle:
 -/
 inductive Q3_6_nfa : Type
--- *Insert* your states here
--- e.g. | q0 | q1 | ...
+| q0 | q1 | q2 | q3 | q4
 deriving Fintype, DecidableEq
 open Q3_6_nfa
 
 abbrev A3_6_nfa : NFA SigmaBin :=
-  -- *insert* your definition of the automaton here.
-  {   Q := sorry
-      S := sorry
-      F := sorry
-      δ := sorry
+
+  {   Q := Q3_6_nfa
+      S := {q0}
+      F := {q4}
+      δ := fun q a => match q, a with
+        | q0, 0 => {q0, q2}
+        | q0, 1 => {q0, q1, q3}
+        | q1, 1 => {q0}
+        | q2, 0 => {q0}
+        | q3, 0 => {q4}
+        | _, _ => ∅
   }
 
 -- test cases
