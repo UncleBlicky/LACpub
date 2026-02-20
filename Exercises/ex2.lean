@@ -40,17 +40,17 @@ deriving Fintype, DecidableEq
 open Q_div3
 
 abbrev A_div3 : DFA SigmaBin :=
-  -- *Insert* your definition of the automaton here.
+
   {   Q := Q_div3
       s := q0
       F := {q0}
       δ := fun q a => match q, a with
-        | q0, 0 => q0  -- 0 + 0*2^i ≡ 0 (mod 3)
-        | q0, 1 => q1  -- 0 + 1*2^i cycles through 1,2,1,2,...
-        | q1, 0 => q1  -- 1 + 0*2^i ≡ 1 (mod 3)
-        | q1, 1 => q2  -- 1 + 1*2^i: depends on position
-        | q2, 0 => q2  -- 2 + 0*2^i ≡ 2 (mod 3)
-        | q2, 1 => q0  -- 2 + 1*2^i cycles back
+        | q0, 0 => q0
+        | q0, 1 => q1
+        | q1, 0 => q2
+        | q1, 1 => q0
+        | q2, 0 => q1
+        | q2, 1 => q2
         | _, _ => q0
   }
 
