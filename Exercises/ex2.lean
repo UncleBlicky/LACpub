@@ -31,11 +31,9 @@ abbrev div3 : Lang SigmaBin
 := { w | val w ≡ 0 [MOD 3]}
 
 inductive Q_div3 : Type
-
 | q0  -- remainder 0 (divisible by 3)
 | q1  -- remainder 1
 | q2  -- remainder 2
-
 deriving Fintype, DecidableEq
 open Q_div3
 
@@ -76,22 +74,27 @@ Formalise the NFA depicted in the exercise
 description on Moodle:
 -/
 inductive Q3_6_nfa : Type
-| q0 | q1 | q2 | q3 | q4
+| q0
+| q1
+| q2
+| q3
+| q4
 deriving Fintype, DecidableEq
 open Q3_6_nfa
 
 abbrev A3_6_nfa : NFA SigmaBin :=
 
-  {   Q := Q3_6_nfa
-      S := {q0}
-      F := {q4}
-      δ := fun q a => match q, a with
-        | q0, 0 => {q0, q2}
-        | q0, 1 => {q0, q1, q3}
-        | q1, 1 => {q0}
-        | q2, 0 => {q0}
-        | q3, 0 => {q4}
-        | _, _ => ∅
+
+ {  Q := Q3_6_nfa
+    S := {q0}
+    F := {q4}
+    δ := fun q a => match q, a with
+      | q0, 0 => {q0, q2}
+      | q0, 1 => {q0, q1, q3}
+      | q1, 1 => {q0}
+      | q2, 0 => {q0}
+      | q3, 0 => {q4}
+      | _, _ => ∅
   }
 
 -- test cases
@@ -109,35 +112,25 @@ inductive Q3_6_dfa : Type
 | q_empty
 | q_0
 | q_02
-| q_01
-| q_012
 | q_013
-| q_0123
-| q_01234
+| q_024
 
 deriving Fintype, DecidableEq
 open Q3_6_dfa
 
 abbrev A3_6_dfa : DFA SigmaBin :=
-  -- *insert* your definition of the automaton here.
   {   Q := Q3_6_dfa
       s := q_0
-      F := {q_01234}
+      F := {q_024}
       δ := fun q a => match q, a with
         | q_0, 0 => q_02
         | q_0, 1 => q_013
         | q_02, 0 => q_02
         | q_02, 1 => q_013
-        | q_01, 0 => q_02
-        | q_01, 1 => q_013
-        | q_012, 0 => q_02
-        | q_012, 1 => q_013
-        | q_013, 0 => q_01234
+        | q_013, 0 => q_024
         | q_013, 1 => q_013
-        | q_0123, 0 => q_01234
-        | q_0123, 1 => q_013
-        | q_01234, 0 => q_02
-        | q_01234, 1 => q_013
+        | q_024, 0 => q_02
+        | q_024, 1 => q_013
         | q_empty, _ => q_empty
         | _, _ => q_empty
   }
